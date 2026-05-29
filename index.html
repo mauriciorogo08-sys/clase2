@@ -1,0 +1,488 @@
+```html
+<!DOCTYPE html>
+<html lang="es" class="h-full scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 2 — La Atención es la Moneda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#030307',          /* Negro puro espacial profundo */
+                            card: '#0a0a14',        /* Azul marino/grisáceo ultra oscuro */
+                            cardHover: '#0f0f20',   /* Resalte interactivo de tarjeta */
+                            border: '#16162a',      /* Borde sutil */
+                            borderHover: '#2d2d4d', /* Borde activo */
+                            accent: '#6366f1'
+                        }
+                    },
+                    animation: {
+                        'float-slow': 'float 12s ease-in-out infinite',
+                        'float-delayed': 'floatDelayed 15s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Deslizamiento magnético vertical (Scroll Snapping) */
+        .snap-container {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            height: 100vh;
+        }
+        .snap-section {
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Eliminar scrollbars visuales */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Animaciones a nivel CSS */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-30px) scale(1.1); }
+        }
+        @keyframes floatDelayed {
+            0%, 100% { transform: translateY(0px) scale(1.1); }
+            50% { transform: translateY(40px) scale(0.9); }
+        }
+        
+        .animate-float {
+            animation: float 12s ease-in-out infinite;
+        }
+        .animate-float-delayed {
+            animation: floatDelayed 16s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-brand-bg text-slate-100 font-sans h-full overflow-hidden antialiased select-none">
+
+    <!-- Notificación Personalizada flotante (Reemplaza al Alert) -->
+    <div id="toast" class="fixed top-24 left-1/2 -translate-x-1/2 z-50 bg-indigo-950/90 border border-indigo-500/30 text-indigo-200 px-6 py-3 rounded-2xl shadow-2xl backdrop-blur-md flex items-center gap-3 transition-all duration-500 transform translate-y-[-100px] opacity-0 pointer-events-none">
+        <div class="w-6 h-6 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+            <i data-lucide="check-circle" class="w-4 h-4"></i>
+        </div>
+        <div>
+            <p class="text-xs font-mono font-bold tracking-wide uppercase">Análisis Terminado</p>
+            <p class="text-[11px] text-slate-300">¡Análisis de los 5 videos completado con éxito!</p>
+        </div>
+    </div>
+
+    <header class="fixed top-0 left-0 w-full px-8 py-6 z-40 flex justify-between items-center bg-gradient-to-b from-brand-bg to-transparent">
+        <div class="flex items-center gap-3">
+            <div class="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse"></div>
+            <span class="text-xs font-display font-semibold tracking-wider text-slate-300 uppercase">Clase 2 &bull; Estrategia de Contenido</span>
+        </div>
+        <div class="text-[10px] font-mono text-slate-400 tracking-wider uppercase bg-brand-card/80 border border-brand-border px-3.5 py-1.5 rounded-full backdrop-blur-md">
+            Usa ↓ ↑ o Rueda del Ratón
+        </div>
+    </header>
+
+    <div class="snap-container no-scrollbar" id="presentation-scroll">
+
+        <!-- Slide 1: Portada -->
+        <section class="snap-section px-6">
+            <div class="absolute w-[500px] h-[500px] bg-indigo-600/10 rounded-full filter blur-[120px] top-1/4 left-1/4 animate-float"></div>
+            <div class="absolute w-[400px] h-[400px] bg-purple-600/10 rounded-full filter blur-[120px] bottom-1/4 right-1/4 animate-float-delayed"></div>
+            
+            <div class="max-w-4xl text-center space-y-8 z-10">
+                <span class="text-[10px] font-mono tracking-[0.35em] text-indigo-400 uppercase font-bold bg-indigo-500/10 border border-indigo-500/30 px-5 py-2 rounded-full backdrop-blur-md">
+                    Estrategia y Concepto
+                </span>
+                <h1 class="text-5xl sm:text-7xl md:text-8xl font-display font-extrabold text-white tracking-tighter leading-none">
+                    LA ATENCIÓN <br />
+                    <span class="text-transparent bg-gradient-to-r from-indigo-400 via-pink-400 to-amber-300 bg-clip-text">ES LA MONEDA</span>
+                </h1>
+                <div class="w-12 h-[3px] bg-gradient-to-r from-indigo-500 to-pink-500 mx-auto rounded-full my-6"></div>
+                <p class="text-base sm:text-lg text-slate-400 max-w-xl mx-auto font-light leading-relaxed">
+                    El verdadero enemigo del creador no es el hate. <br />
+                    <span class="text-white font-semibold">Es el aburrimiento.</span>
+                </p>
+                <div class="pt-8 flex flex-col items-center gap-2 text-slate-500">
+                    <div class="w-6 h-10 border border-slate-700 rounded-full p-1.5 flex justify-center">
+                        <div class="w-1.5 h-2 bg-indigo-400 rounded-full animate-bounce"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 2: Pregunta -->
+        <section class="snap-section px-6 bg-gradient-to-b from-brand-bg to-[#070710]">
+            <div class="max-w-3xl text-center space-y-8 z-10">
+                <span class="text-[11px] font-mono tracking-[0.2em] text-pink-400 uppercase font-bold bg-pink-500/10 border border-pink-500/20 px-4 py-1.5 rounded-full">&mdash; PREGUNTA AL AULA</span>
+                <h2 class="text-4xl sm:text-6xl font-display font-bold text-white tracking-tight leading-tight">
+                    ¿Dónde creen que la gente <br />
+                    <span class="text-transparent bg-gradient-to-r from-pink-400 to-red-400 bg-clip-text underline decoration-pink-500/40 decoration-wavy decoration-2 underline-offset-[12px]">dejó de mirar?</span>
+                </h2>
+                <p class="text-slate-300 text-sm sm:text-base max-w-lg mx-auto font-light leading-relaxed pt-4">
+                    Abre el debate con tus alumnos antes de avanzar. Analicen qué causa la desconexión inmediata en los ojos de un espectador moderno.
+                </p>
+            </div>
+        </section>
+
+        <!-- Slide 3: Psicología Cognitiva -->
+        <section class="snap-section px-6">
+            <div class="absolute w-[450px] h-[450px] bg-purple-600/10 rounded-full filter blur-[110px] bottom-10 right-10 animate-float-delayed"></div>
+            
+            <div class="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center z-10">
+                <div class="space-y-6">
+                    <div class="flex items-center gap-2 text-indigo-400 font-mono text-xs uppercase tracking-widest font-bold">
+                        <span>Tema 1</span> &bull; <span>Psicología Cognitiva</span>
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-display font-bold text-white tracking-tight leading-tight">
+                        Cómo funciona la atención humana
+                    </h2>
+                    <p class="text-slate-300 text-sm leading-relaxed font-light">
+                        Lanza esta pregunta al grupo: <br />
+                        <span class="text-indigo-300 italic font-medium text-base">"Si estamos caminando por la calle, ¿qué cosas nos hacen mirar de golpe?"</span>
+                    </p>
+                    <div class="bg-brand-card border border-brand-border rounded-2xl p-5 text-xs text-slate-400 font-mono flex gap-3 items-start shadow-xl">
+                        <span class="text-amber-400 text-sm">💡</span>
+                        <div>
+                            <b class="text-slate-200">Tip para el docente:</b> Deja que respondan libremente antes de revelar las tarjetas de la derecha.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-4 bg-brand-card/80 hover:bg-brand-cardHover border border-brand-border hover:border-red-500/30 rounded-2xl flex items-center gap-3 transition-all duration-300 group hover:-translate-y-1">
+                        <div class="w-9 h-9 rounded-xl bg-red-500/10 flex items-center justify-center text-red-400 text-base font-bold transition-all duration-300 group-hover:scale-110">📢</div>
+                        <span class="text-xs sm:text-sm text-slate-300 font-medium">Un ruido</span>
+                    </div>
+                    <div class="p-4 bg-brand-card/80 hover:bg-brand-cardHover border border-brand-border hover:border-purple-500/30 rounded-2xl flex items-center gap-3 transition-all duration-300 group hover:-translate-y-1">
+                        <div class="w-9 h-9 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 text-base font-bold transition-all duration-300 group-hover:scale-110">🔮</div>
+                        <span class="text-xs sm:text-sm text-slate-300 font-medium">Algo raro</span>
+                    </div>
+                    <div class="p-4 bg-brand-card/80 hover:bg-brand-cardHover border border-brand-border hover:border-amber-500/30 rounded-2xl flex items-center gap-3 transition-all duration-300 group hover:-translate-y-1">
+                        <div class="w-9 h-9 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 text-base font-bold transition-all duration-300 group-hover:scale-110">🏃</div>
+                        <span class="text-xs sm:text-sm text-slate-300 font-medium">Alguien corriendo</span>
+                    </div>
+                    <div class="p-4 bg-brand-card/80 hover:bg-brand-cardHover border border-brand-border hover:border-blue-500/30 rounded-2xl flex items-center gap-3 transition-all duration-300 group hover:-translate-y-1">
+                        <div class="w-9 h-9 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 text-base font-bold transition-all duration-300 group-hover:scale-110">💥</div>
+                        <span class="text-xs sm:text-sm text-slate-300 font-medium">Un choque</span>
+                    </div>
+                    <div class="p-4 bg-brand-card/80 hover:bg-brand-cardHover border border-brand-border hover:border-emerald-500/30 rounded-2xl flex items-center gap-3 col-span-2 transition-all duration-300 group hover:-translate-y-1">
+                        <div class="w-9 h-9 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 text-base font-bold transition-all duration-300 group-hover:scale-110">✨</div>
+                        <span class="text-xs sm:text-sm text-slate-300 font-medium">Algo estéticamente lindo</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Redes Sociales -->
+        <section class="snap-section px-6 bg-[#04040a]">
+            <div class="max-w-4xl w-full text-center space-y-8 z-10">
+                <h3 class="text-3xl sm:text-5xl font-display font-medium text-slate-300">
+                    Las redes funcionan <span class="text-transparent bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text font-extrabold">exactamente igual.</span>
+                </h3>
+                <p class="text-xs font-mono text-indigo-400 uppercase tracking-[0.25em] font-semibold">Nuestro cerebro nativo digital busca de forma constante:</p>
+                
+                <div class="flex flex-wrap justify-center gap-3.5 pt-4">
+                    <span class="px-5 py-3 bg-brand-card hover:bg-brand-cardHover border border-brand-border hover:border-indigo-500/30 rounded-2xl text-xs font-mono font-medium tracking-wider text-indigo-300 transition-all duration-300 hover:scale-105 shadow-md">⚡ NOVEDAD</span>
+                    <span class="px-5 py-3 bg-brand-card hover:bg-brand-cardHover border border-brand-border hover:border-pink-500/30 rounded-2xl text-xs font-mono font-medium tracking-wider text-pink-300 transition-all duration-300 hover:scale-105 shadow-md">❤️ EMOCIÓN</span>
+                    <span class="px-5 py-3 bg-brand-card hover:bg-brand-cardHover border border-brand-border hover:border-amber-500/30 rounded-2xl text-xs font-mono font-medium tracking-wider text-amber-300 transition-all duration-300 hover:scale-105 shadow-md">🔥 CONFLICTO</span>
+                    <span class="px-5 py-3 bg-brand-card hover:bg-brand-cardHover border border-brand-border hover:border-purple-500/30 rounded-2xl text-xs font-mono font-medium tracking-wider text-purple-300 transition-all duration-300 hover:scale-105 shadow-md">😲 SORPRESA</span>
+                    <span class="px-5 py-3 bg-brand-card hover:bg-brand-cardHover border border-brand-border hover:border-emerald-500/30 rounded-2xl text-xs font-mono font-medium tracking-wider text-emerald-300 transition-all duration-300 hover:scale-105 shadow-md">🌿 BELLEZA</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Ejercicio Interactivo -->
+        <section class="snap-section px-6">
+            <div class="max-w-4xl w-full space-y-6 z-10">
+                <div class="text-center space-y-2">
+                    <span class="text-[10px] font-mono bg-amber-500/10 border border-amber-500/30 text-amber-400 px-4 py-1.5 rounded-full uppercase font-bold tracking-widest">Ejercicio Práctico</span>
+                    <h2 class="text-3xl sm:text-4xl font-display font-bold text-white">Dinámica: Test del Ojo Ciego</h2>
+                    <p class="text-xs sm:text-sm text-slate-400">Muestra 5 videos en el proyector <b>sin sonido</b>. Pide que voten aquí abajo.</p>
+                </div>
+
+                <div class="bg-brand-card/90 border border-brand-border rounded-2xl p-6 max-w-xl mx-auto space-y-5 shadow-2xl backdrop-blur-md">
+                    <div class="flex items-center justify-between text-xs font-mono text-slate-400 pb-3 border-b border-brand-border">
+                        <span>Video bajo análisis</span>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                            <span id="video-number" class="text-indigo-400 font-bold">1 de 5</span>
+                        </div>
+                    </div>
+                    
+                    <div id="video-canvas" class="h-36 bg-slate-950/60 rounded-xl flex flex-col items-center justify-center border border-dashed border-indigo-950/40 relative overflow-hidden group transition-all duration-300">
+                        <!-- Flash effect div -->
+                        <div id="flash-effect" class="absolute inset-0 bg-transparent transition-colors duration-200 pointer-events-none z-15"></div>
+                        <i id="video-icon" data-lucide="video" class="w-8 h-8 text-slate-600 transition-all duration-300"></i>
+                        <span class="absolute bottom-3 text-[10px] text-slate-500 font-mono tracking-wide">Reproduce material externo sin audio</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-3.5">
+                        <button onclick="voteScroll('keep')" class="py-3 bg-emerald-600/10 border border-emerald-500/30 hover:bg-emerald-600/20 active:scale-95 text-emerald-400 rounded-xl text-xs font-bold transition duration-200 flex items-center justify-center gap-2 shadow-lg">
+                            <i data-lucide="eye" class="w-4 h-4"></i> Seguir Mirando
+                        </button>
+                        <button onclick="voteScroll('scroll')" class="py-3 bg-red-600/10 border border-red-500/30 hover:bg-red-600/20 active:scale-95 text-red-400 rounded-xl text-xs font-bold transition duration-200 flex items-center justify-center gap-2 shadow-lg">
+                            <i data-lucide="mouse-pointer" class="w-4 h-4"></i> Hacer Scroll
+                        </button>
+                    </div>
+                    <div class="text-[10px] text-slate-500 text-center italic">
+                        Alumnos levantan la mano en clase. Analicen juntos el "por qué" visual de la decisión.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: El Hook (El Gancho) -->
+        <section class="snap-section px-6">
+            <div class="absolute w-[450px] h-[450px] bg-emerald-600/5 rounded-full filter blur-[120px] top-10 right-1/4 animate-float"></div>
+            
+            <div class="max-w-4xl w-full space-y-6 z-10">
+                <div class="flex items-center gap-2 text-emerald-400 font-mono text-xs uppercase tracking-widest font-bold">
+                    <span>Tema 2</span> &bull; <span>Estructura de Retención</span>
+                </div>
+                <h2 class="text-4xl sm:text-5xl font-display font-bold text-white tracking-tight">
+                    El Hook (El Gancho)
+                </h2>
+                <p class="text-slate-300 text-sm sm:text-base max-w-xl font-light">
+                    Los primeros segundos de cualquier pieza de contenido digital no son una introducción formal, <span class="text-emerald-400 font-medium">son una promesa explícita.</span>
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 pt-4">
+                    <div class="p-6 bg-brand-card/80 border-l-4 border-red-500/40 border-y border-r border-brand-border rounded-xl space-y-3 relative group hover:-translate-y-1 transition-all duration-300">
+                        <span class="absolute top-4 right-4 text-red-400 text-sm font-bold bg-red-500/10 w-6 h-6 rounded-full flex items-center justify-center">❌</span>
+                        <h4 class="text-xs font-mono text-slate-500 uppercase tracking-wider font-bold">Error Común (Aburrido)</h4>
+                        <p class="text-sm font-medium text-slate-300 italic leading-relaxed pt-1">
+                            "Hola chicos, ¿cómo están? Hoy en este video les voy a mostrar mi proceso de..."
+                        </p>
+                    </div>
+                    <div class="p-6 bg-brand-card/80 border-l-4 border-emerald-500/40 border-y border-r border-brand-border rounded-xl space-y-3 relative group hover:-translate-y-1 transition-all duration-300">
+                        <span class="absolute top-4 right-4 text-emerald-400 text-sm font-bold bg-emerald-500/10 w-6 h-6 rounded-full flex items-center justify-center">✅</span>
+                        <h4 class="text-xs font-mono text-emerald-400 uppercase tracking-wider font-bold">Estructura Magnética</h4>
+                        <p class="text-sm font-medium text-white italic leading-relaxed pt-1">
+                            "Hice esto exactamente durante 30 días seguidos y pasó algo muy raro."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 7: Storytelling -->
+        <section class="snap-section px-6 bg-[#040409]">
+            <div class="max-w-4xl w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center z-10">
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="text-purple-400 font-mono text-xs uppercase tracking-widest font-bold">Tema 3 &bull; Arquitectura Narrativa</div>
+                    <h2 class="text-4xl md:text-5xl font-display font-bold text-white tracking-tight">Storytelling</h2>
+                    <p class="text-slate-300 text-xs md:text-sm leading-relaxed font-light">
+                        Toda historia efectiva en internet se puede destilar en una estructura atómica de tres pasos lineales. Si falta uno, la tensión cae.
+                    </p>
+                </div>
+                
+                <div class="lg:col-span-7 space-y-4 relative">
+                    <!-- Conector de pasos decorativo -->
+                    <div class="absolute left-7 top-6 bottom-6 w-0.5 bg-gradient-to-b from-indigo-500 via-pink-500 to-emerald-500 hidden sm:block"></div>
+                    
+                    <div class="p-4 bg-brand-card/80 hover:bg-brand-cardHover border border-brand-border hover:border-indigo-500/30 rounded-xl flex items-center gap-5 transition duration-300 relative">
+                        <span class="w-7 h-7 rounded-full bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-mono text-xs font-bold shrink-0">1</span>
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-indigo-400">Situación Inicial</h4>
+                            <p class="text-xs text-slate-300 italic mt-0.5">"No tenía ningún cliente en mi portfolio..."</p>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-brand-card/80 hover:bg-brand-cardHover border border-brand-border hover:border-pink-500/30 rounded-xl flex items-center gap-5 transition duration-300 relative">
+                        <span class="w-7 h-7 rounded-full bg-pink-500/10 text-pink-400 flex items-center justify-center font-mono text-xs font-bold shrink-0">2</span>
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-pink-400">El Problema / Quiebre</h4>
+                            <p class="text-xs text-slate-300 italic mt-0.5">"Así que decidí arriesgarme y probar un método loco..."</p>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-brand-card/80 hover:bg-brand-cardHover border border-brand-border hover:border-emerald-500/30 rounded-xl flex items-center gap-5 transition duration-300 relative">
+                        <span class="w-7 h-7 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-mono text-xs font-bold shrink-0">3</span>
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400">El Cambio / Resolución</h4>
+                            <p class="text-xs text-slate-300 italic mt-0.5">"Y gracias a eso hoy conseguí mi primer trabajo pago."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 8: Mostrar vs Contar -->
+        <section class="snap-section px-6">
+            <div class="absolute w-[500px] h-[500px] bg-cyan-600/5 rounded-full filter blur-[130px] top-1/3 left-1/3 animate-float"></div>
+            
+            <div class="max-w-5xl w-full space-y-8 z-10">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 border-b border-brand-border pb-6">
+                    <div>
+                        <span class="text-xs font-mono text-slate-400 uppercase tracking-widest font-bold">Tema 4</span>
+                        <h3 class="text-xl sm:text-2xl font-display font-bold text-white mt-1">La diferencia entre mostrar y contar</h3>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed font-light">
+                            No digas que un personaje está cansado: muestra las ojeras y la taza de café fría. En pantallas, lo visual siempre devora al texto plano.
+                        </p>
+                    </div>
+                    <div>
+                        <span class="text-xs font-mono text-indigo-400 uppercase tracking-widest font-bold">Tema 5</span>
+                        <h3 class="text-xl sm:text-2xl font-display font-bold text-white mt-1">La estética es un idioma nativo</h3>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed font-light">
+                            Una composición visual comunica un sentimiento e identidad antes de que la persona llegue a leer la primera palabra del guion.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <p class="text-[10px] font-mono text-slate-400 uppercase tracking-widest text-center">Pregunta al aula: ¿Qué atmósfera transmite cada obra?</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="p-5 bg-brand-card border border-brand-border rounded-2xl text-center space-y-2 hover:border-amber-500/40 hover:-translate-y-1 transition duration-300">
+                            <div class="h-16 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400"><i data-lucide="toy-brick" class="w-7 h-7"></i></div>
+                            <h4 class="text-xs font-bold font-display text-white">Toy Story</h4>
+                            <p class="text-[11px] text-slate-400">Nostalgia, calidez, texturas físicas.</p>
+                        </div>
+                        <div class="p-5 bg-brand-card border border-brand-border rounded-2xl text-center space-y-2 hover:border-red-500/40 hover:-translate-y-1 transition duration-300">
+                            <div class="h-16 rounded-xl bg-red-950/20 flex items-center justify-center text-red-500"><i data-lucide="shield" class="w-7 h-7"></i></div>
+                            <h4 class="text-xs font-bold font-display text-white">The Batman</h4>
+                            <p class="text-[11px] text-slate-400">Sombras, peligro, misterio monocromático.</p>
+                        </div>
+                        <div class="p-5 bg-brand-card border border-brand-border rounded-2xl text-center space-y-2 hover:border-pink-500/40 hover:-translate-y-1 transition duration-300">
+                            <div class="h-16 rounded-xl bg-pink-500/10 flex items-center justify-center text-pink-400"><i data-lucide="palmtree" class="w-7 h-7"></i></div>
+                            <h4 class="text-xs font-bold font-display text-white">The Grand Budapest Hotel</h4>
+                            <p class="text-[11px] text-slate-400">Simetría obsesiva, tonos pastel, orden.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 9: Diferenciación Radical -->
+        <section class="snap-section px-6 bg-[#04040a]">
+            <div class="max-w-4xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center z-10">
+                <div class="space-y-6">
+                    <div class="text-pink-400 font-mono text-xs uppercase tracking-widest font-bold">Tema 6 &bull; Diferenciación Radical</div>
+                    <h2 class="text-3xl md:text-5xl font-display font-bold text-white tracking-tight leading-tight">
+                        El contenido que nadie más puede hacer
+                    </h2>
+                    <p class="text-slate-300 text-sm leading-relaxed font-light">
+                        ¿Qué contenido podrías hacer vos que otra persona del planeta no puede replicar? <br /><br />
+                        La respuesta casi nunca es <span class="text-pink-400 font-semibold">"ser más profesional"</span>. La verdadera ventaja competitiva está oculta en tu identidad.
+                    </p>
+                </div>
+
+                <div class="space-y-3 font-mono text-xs">
+                    <div class="p-4 bg-brand-card border border-brand-border hover:border-indigo-500/30 rounded-xl flex items-center gap-3.5 transition duration-300 hover:scale-[1.02]">
+                        <span class="text-indigo-400 font-bold text-sm">▸</span> <span class="text-slate-200">Una experiencia personal única</span>
+                    </div>
+                    <div class="p-4 bg-brand-card border border-brand-border hover:border-indigo-500/30 rounded-xl flex items-center gap-3.5 transition duration-300 hover:scale-[1.02]">
+                        <span class="text-indigo-400 font-bold text-sm">▸</span> <span class="text-slate-200">Una historia de fracaso propia</span>
+                    </div>
+                    <div class="p-4 bg-brand-card border border-brand-border hover:border-indigo-500/30 rounded-xl flex items-center gap-3.5 transition duration-300 hover:scale-[1.02]">
+                        <span class="text-indigo-400 font-bold text-sm">▸</span> <span class="text-slate-200">Una obsesión personal extraña</span>
+                    </div>
+                    <div class="p-4 bg-brand-card border border-brand-border hover:border-indigo-500/30 rounded-xl flex items-center gap-3.5 transition duration-300 hover:scale-[1.02]">
+                        <span class="text-indigo-400 font-bold text-sm">▸</span> <span class="text-slate-200">Una combinación rara de dos intereses</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 10: Cierre -->
+        <section class="snap-section px-6">
+            <div class="absolute w-[600px] h-[600px] bg-indigo-500/5 rounded-full filter blur-[140px] bottom-[-20%] left-1/2 -translate-x-1/2 animate-float"></div>
+            
+            <div class="max-w-4xl w-full space-y-6 z-10">
+                <div class="text-center space-y-2">
+                    <span class="text-xs font-mono text-indigo-400 uppercase tracking-widest font-bold">Cierre de la Sesión</span>
+                    <h2 class="text-3xl sm:text-5xl font-display font-bold text-white tracking-tight">La Fórmula de Marca Personal</h2>
+                </div>
+
+                <div class="bg-brand-card/90 border border-brand-border rounded-2xl p-6 md:p-8 max-w-2xl mx-auto space-y-6 shadow-2xl backdrop-blur-md">
+                    <div class="grid grid-cols-3 gap-3 text-center text-xs md:text-sm font-display font-bold text-white">
+                        <div class="p-3 bg-brand-bg border border-brand-border rounded-xl text-indigo-300 hover:border-indigo-500/30 transition">Pasión</div>
+                        <div class="p-3 bg-brand-bg border border-brand-border rounded-xl text-pink-300 hover:border-pink-500/30 transition">Conocimiento</div>
+                        <div class="p-3 bg-brand-bg border border-brand-border rounded-xl text-purple-300 hover:border-purple-500/30 transition">Personalidad</div>
+                    </div>
+                    
+                    <div class="space-y-3 pt-2">
+                        <label class="block text-[11px] font-mono uppercase text-slate-500 tracking-wide font-bold">Completa la declaración de identidad de tu canal/proyecto:</label>
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 bg-slate-950 p-4 border border-brand-border rounded-xl text-sm md:text-base font-display">
+                            <span class="text-slate-300 shrink-0 font-medium">"Mi contenido existe para:</span>
+                            <input type="text" id="final-statement-input" placeholder="ej: enseñar arte de forma divertida" class="w-full bg-transparent border-b border-slate-800 text-indigo-400 font-bold focus:outline-none focus:border-indigo-500 transition px-1 py-0.5 placeholder:text-slate-700 placeholder:font-light">
+                            <span class="text-slate-300 shrink-0 hidden sm:inline">."</span>
+                        </div>
+                    </div>
+
+                    <div class="text-[10px] text-slate-500 font-mono text-center leading-relaxed">
+                        Pide a tus alumnos que definan su "moodboard" de identidad (Pinterest, colores, fuentes) para la siguiente clase.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // Inicializar iconos Lucide
+        lucide.createIcons();
+
+        // Control de estado para el ejercicio del video
+        let activeVideoStep = 1;
+        const videoCanvas = document.getElementById('video-canvas');
+        const videoIcon = document.getElementById('video-icon');
+        const flashEffect = document.getElementById('flash-effect');
+        const toast = document.getElementById('toast');
+
+        function voteScroll(decision) {
+            // Retroalimentación visual de flash en la pantalla del "video"
+            if (decision === 'keep') {
+                flashEffect.className = "absolute inset-0 bg-emerald-500/10 pointer-events-none z-15";
+                videoIcon.classList.add('scale-125', 'text-emerald-400');
+            } else {
+                flashEffect.className = "absolute inset-0 bg-red-500/10 pointer-events-none z-15";
+                videoIcon.classList.add('translate-y-2', 'text-red-400', 'opacity-30');
+            }
+
+            // Volver la animación a la normalidad después de un breve instante
+            setTimeout(() => {
+                flashEffect.className = "absolute inset-0 bg-transparent pointer-events-none z-15";
+                videoIcon.className = "w-8 h-8 text-slate-600 transition-all duration-300";
+            }, 300);
+
+            if(activeVideoStep < 5) {
+                activeVideoStep++;
+                document.getElementById('video-number').innerText = `${activeVideoStep} de 5`;
+            } else {
+                // Mostrar Toast en vez de usar el forbidden "alert()"
+                showCustomToast();
+                activeVideoStep = 1;
+                document.getElementById('video-number').innerText = `1 de 5`;
+            }
+        }
+
+        function showCustomToast() {
+            toast.classList.remove('translate-y-[-100px]', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-[-100px]', 'opacity-0', 'pointer-events-none');
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
+
+```
