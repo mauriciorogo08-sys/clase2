@@ -79,17 +79,18 @@
 </head>
 <body class="bg-brand-bg text-slate-100 font-sans h-full overflow-hidden antialiased select-none">
 
-    <!-- Notificación Personalizada flotante (Reemplaza al Alert) -->
-    <div id="toast" class="fixed top-24 left-1/2 -translate-x-1/2 z-50 bg-indigo-950/90 border border-indigo-500/30 text-indigo-200 px-6 py-3 rounded-2xl shadow-2xl backdrop-blur-md flex items-center gap-3 transition-all duration-500 transform translate-y-[-100px] opacity-0 pointer-events-none">
+    <!-- Notificación Personalizada flotante (Toast) -->
+    <div id="toast" class="fixed top-24 left-1/2 -translate-x-1/2 z-50 bg-indigo-950/95 border border-indigo-500/30 text-indigo-200 px-6 py-3 rounded-2xl shadow-2xl backdrop-blur-md flex items-center gap-3 transition-all duration-500 transform translate-y-[-100px] opacity-0 pointer-events-none">
         <div class="w-6 h-6 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400">
-            <i data-lucide="check-circle" class="w-4 h-4"></i>
+            <i data-lucide="info" id="toast-icon" class="w-4 h-4"></i>
         </div>
         <div>
-            <p class="text-xs font-mono font-bold tracking-wide uppercase">Análisis Terminado</p>
-            <p class="text-[11px] text-slate-300">¡Análisis de los 5 videos completado con éxito!</p>
+            <p id="toast-title" class="text-xs font-mono font-bold tracking-wide uppercase">Análisis Terminado</p>
+            <p id="toast-desc" class="text-[11px] text-slate-300">¡Análisis de los 5 videos completado con éxito!</p>
         </div>
     </div>
 
+    <!-- Encabezado fijo -->
     <header class="fixed top-0 left-0 w-full px-8 py-6 z-40 flex justify-between items-center bg-gradient-to-b from-brand-bg to-transparent">
         <div class="flex items-center gap-3">
             <div class="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse"></div>
@@ -209,17 +210,17 @@
             </div>
         </section>
 
-        <!-- Slide 5: Ejercicio Interactivo -->
+        <!-- Slide 5: Ejercicio Interactivo con YouTube Embebido -->
         <section class="snap-section px-6">
             <div class="max-w-4xl w-full space-y-6 z-10">
                 <div class="text-center space-y-2">
                     <span class="text-[10px] font-mono bg-amber-500/10 border border-amber-500/30 text-amber-400 px-4 py-1.5 rounded-full uppercase font-bold tracking-widest">Ejercicio Práctico</span>
                     <h2 class="text-3xl sm:text-4xl font-display font-bold text-white">Dinámica: Test del Ojo Ciego</h2>
-                    <p class="text-xs sm:text-sm text-slate-400">Muestra 5 videos en el proyector <b>sin sonido</b>. Pide que voten aquí abajo.</p>
+                    <p class="text-xs sm:text-sm text-slate-400">Analiza el video <b>sin sonido</b> o carga tu propio video preferido directamente.</p>
                 </div>
 
-                <div class="bg-brand-card/90 border border-brand-border rounded-2xl p-6 max-w-xl mx-auto space-y-5 shadow-2xl backdrop-blur-md">
-                    <div class="flex items-center justify-between text-xs font-mono text-slate-400 pb-3 border-b border-brand-border">
+                <div class="bg-brand-card/90 border border-brand-border rounded-2xl p-6 max-w-xl mx-auto space-y-4 shadow-2xl backdrop-blur-md">
+                    <div class="flex items-center justify-between text-xs font-mono text-slate-400 pb-2 border-b border-brand-border">
                         <span>Video bajo análisis</span>
                         <div class="flex items-center gap-2">
                             <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
@@ -227,14 +228,43 @@
                         </div>
                     </div>
                     
-                    <div id="video-canvas" class="h-36 bg-slate-950/60 rounded-xl flex flex-col items-center justify-center border border-dashed border-indigo-950/40 relative overflow-hidden group transition-all duration-300">
-                        <!-- Flash effect div -->
-                        <div id="flash-effect" class="absolute inset-0 bg-transparent transition-colors duration-200 pointer-events-none z-15"></div>
-                        <i id="video-icon" data-lucide="video" class="w-8 h-8 text-slate-600 transition-all duration-300"></i>
-                        <span class="absolute bottom-3 text-[10px] text-slate-500 font-mono tracking-wide">Reproduce material externo sin audio</span>
+                    <!-- Reproductor de YouTube Integrado de manera premium -->
+                    <div id="video-canvas-container" class="aspect-video w-full bg-slate-950 rounded-xl overflow-hidden relative border border-brand-border group transition-all duration-300">
+                        <!-- Efecto de Destello / Flash de votación -->
+                        <div id="flash-effect" class="absolute inset-0 bg-transparent transition-colors duration-300 pointer-events-none z-20"></div>
+                        
+                        <!-- Iframe de YouTube Embebido -->
+                        <iframe 
+                            id="youtube-iframe"
+                            class="w-full h-full"
+                            src="https://www.youtube.com/embed/y4fJ53BT4Zc?enablejsapi=1&autoplay=0&mute=1" 
+                            title="Reproductor de Video para el Aula"
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+
+                    <!-- Panel interactivo de carga de URL personalizada -->
+                    <div class="bg-brand-bg/60 p-3 rounded-xl border border-brand-border space-y-2">
+                        <label class="block text-[10px] font-mono uppercase text-slate-400 tracking-wide">Carga cualquier video de YouTube aquí:</label>
+                        <div class="flex gap-2">
+                            <input 
+                                type="text" 
+                                id="youtube-url-input" 
+                                placeholder="Pega el link de YouTube (ej. https://youtu.be/...)" 
+                                class="bg-slate-950/80 border border-brand-border focus:border-indigo-500/50 text-[11px] text-slate-300 px-3 py-1.5 rounded-lg outline-none w-full font-mono"
+                            >
+                            <button 
+                                onclick="updateVideo()" 
+                                class="bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-[11px] font-bold px-4 py-1.5 rounded-lg transition shrink-0 shadow-lg"
+                            >
+                                Cargar
+                            </button>
+                        </div>
                     </div>
                     
-                    <div class="grid grid-cols-2 gap-3.5">
+                    <div class="grid grid-cols-2 gap-3">
                         <button onclick="voteScroll('keep')" class="py-3 bg-emerald-600/10 border border-emerald-500/30 hover:bg-emerald-600/20 active:scale-95 text-emerald-400 rounded-xl text-xs font-bold transition duration-200 flex items-center justify-center gap-2 shadow-lg">
                             <i data-lucide="eye" class="w-4 h-4"></i> Seguir Mirando
                         </button>
@@ -418,15 +448,20 @@
                     
                     <div class="space-y-3 pt-2">
                         <label class="block text-[11px] font-mono uppercase text-slate-500 tracking-wide font-bold">Completa la declaración de identidad de tu canal/proyecto:</label>
-                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 bg-slate-950 p-4 border border-brand-border rounded-xl text-sm md:text-base font-display">
-                            <span class="text-slate-300 shrink-0 font-medium">"Mi contenido existe para:</span>
-                            <input type="text" id="final-statement-input" placeholder="ej: enseñar arte de forma divertida" class="w-full bg-transparent border-b border-slate-800 text-indigo-400 font-bold focus:outline-none focus:border-indigo-500 transition px-1 py-0.5 placeholder:text-slate-700 placeholder:font-light">
-                            <span class="text-slate-300 shrink-0 hidden sm:inline">."</span>
+                        <div class="flex flex-col sm:flex-row gap-2">
+                            <input 
+                                type="text" 
+                                id="identity-input"
+                                placeholder="Mi canal/proyecto enseñará sobre..." 
+                                class="bg-brand-bg/80 border border-brand-border focus:border-indigo-500/50 text-xs text-white px-4 py-2.5 rounded-xl outline-none w-full"
+                            >
+                            <button 
+                                onclick="saveIdentity()" 
+                                class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white text-xs font-bold rounded-xl transition duration-200 shrink-0"
+                            >
+                                Guardar
+                            </button>
                         </div>
-                    </div>
-
-                    <div class="text-[10px] text-slate-500 font-mono text-center leading-relaxed">
-                        Pide a tus alumnos que definan su "moodboard" de identidad (Pinterest, colores, fuentes) para la siguiente clase.
                     </div>
                 </div>
             </div>
@@ -434,53 +469,147 @@
 
     </div>
 
+    <!-- Script de Lógica Interactiva -->
     <script>
-        // Inicializar iconos Lucide
-        lucide.createIcons();
+        // Inicializar íconos Lucide
+        document.addEventListener("DOMContentLoaded", () => {
+            lucide.createIcons();
+        });
 
-        // Control de estado para el ejercicio del video
-        let activeVideoStep = 1;
-        const videoCanvas = document.getElementById('video-canvas');
-        const videoIcon = document.getElementById('video-icon');
-        const flashEffect = document.getElementById('flash-effect');
-        const toast = document.getElementById('toast');
+        // Variables de la dinámica de los 5 videos
+        let currentVideoIndex = 1;
+        const totalVideos = 5;
 
-        function voteScroll(decision) {
-            // Retroalimentación visual de flash en la pantalla del "video"
-            if (decision === 'keep') {
-                flashEffect.className = "absolute inset-0 bg-emerald-500/10 pointer-events-none z-15";
-                videoIcon.classList.add('scale-125', 'text-emerald-400');
-            } else {
-                flashEffect.className = "absolute inset-0 bg-red-500/10 pointer-events-none z-15";
-                videoIcon.classList.add('translate-y-2', 'text-red-400', 'opacity-30');
-            }
+        // Lista de videos de ejemplo sobre Economía de la Atención y creación para rotar dinámicamente
+        const sampleVideos = [
+            'y4fJ53BT4Zc', // TikTok y la economía de la atención (Pablo Foncillas)
+            'FUAxRKnxn54', // La economía de la atención
+            'YRI_KG8Istw', // Economía de la atención: mercado invisible
+            'MqFpCzuSgqQ', // Cripto y la economía de la atención
+            'P2F9bgikoM0'  // El futuro digital de la atención
+        ];
 
-            // Volver la animación a la normalidad después de un breve instante
-            setTimeout(() => {
-                flashEffect.className = "absolute inset-0 bg-transparent pointer-events-none z-15";
-                videoIcon.className = "w-8 h-8 text-slate-600 transition-all duration-300";
-            }, 300);
-
-            if(activeVideoStep < 5) {
-                activeVideoStep++;
-                document.getElementById('video-number').innerText = `${activeVideoStep} de 5`;
-            } else {
-                // Mostrar Toast en vez de usar el forbidden "alert()"
-                showCustomToast();
-                activeVideoStep = 1;
-                document.getElementById('video-number').innerText = `1 de 5`;
-            }
-        }
-
-        function showCustomToast() {
-            toast.classList.remove('translate-y-[-100px]', 'opacity-0', 'pointer-events-none');
-            toast.classList.add('translate-y-0', 'opacity-100');
+        // Función para mostrar Toast personalizado
+        function showToast(title, desc, iconName = "check-circle") {
+            const toast = document.getElementById("toast");
+            const toastTitle = document.getElementById("toast-title");
+            const toastDesc = document.getElementById("toast-desc");
+            const toastIcon = document.getElementById("toast-icon");
             
+            toastTitle.textContent = title;
+            toastDesc.textContent = desc;
+            toastIcon.setAttribute("data-lucide", iconName);
+            
+            // Re-renderizar ícono dinámico
+            lucide.createIcons();
+
+            // Mostrar el toast
+            toast.classList.remove("translate-y-[-100px]", "opacity-0", "pointer-events-none");
+            toast.classList.add("translate-y-0", "opacity-100");
+
+            // Ocultar automáticamente a los 3.5 segundos
             setTimeout(() => {
-                toast.classList.remove('translate-y-0', 'opacity-100');
-                toast.classList.add('translate-y-[-100px]', 'opacity-0', 'pointer-events-none');
-            }, 4000);
+                toast.classList.remove("translate-y-0", "opacity-100");
+                toast.classList.add("translate-y-[-100px]", "opacity-0", "pointer-events-none");
+            }, 3500);
         }
+
+        // Lógica de Votación / Feedback del ejercicio
+        function voteScroll(voteType) {
+            const flash = document.getElementById("flash-effect");
+            
+            // Efecto flash verde o rojo según la votación
+            if (voteType === 'keep') {
+                flash.classList.add("bg-emerald-500/20");
+            } else {
+                flash.classList.add("bg-red-500/20");
+            }
+
+            // Quitar flash suavemente
+            setTimeout(() => {
+                flash.classList.remove("bg-emerald-500/20", "bg-red-500/20");
+            }, 400);
+
+            // Cambiar al siguiente video de la dinámica
+            if (currentVideoIndex < totalVideos) {
+                currentVideoIndex++;
+                document.getElementById("video-number").textContent = `${currentVideoIndex} de ${totalVideos}`;
+                
+                // Actualizar iframe con el siguiente video de la lista
+                const iframe = document.getElementById("youtube-iframe");
+                const nextVideoId = sampleVideos[currentVideoIndex - 1];
+                iframe.src = `https://www.youtube.com/embed/${nextVideoId}?enablejsapi=1&autoplay=1&mute=1`;
+                
+                showToast("Voto Registrado", `Pasando al video número ${currentVideoIndex}.`, "check");
+            } else {
+                // Al llegar al final de los 5 videos
+                showToast("Análisis Terminado", "¡Análisis de los 5 videos completado con éxito!", "award");
+                
+                // Reiniciar al primero
+                currentVideoIndex = 1;
+                document.getElementById("video-number").textContent = `${currentVideoIndex} de ${totalVideos}`;
+                const iframe = document.getElementById("youtube-iframe");
+                iframe.src = `https://www.youtube.com/embed/${sampleVideos[0]}?enablejsapi=1&autoplay=0&mute=1`;
+            }
+        }
+
+        // Función para cambiar de video mediante el input de URL personalizado
+        function updateVideo() {
+            const urlInput = document.getElementById("youtube-url-input");
+            const iframe = document.getElementById("youtube-iframe");
+            const url = urlInput.value.trim();
+
+            if (!url) {
+                showToast("Error", "Por favor, ingresa una dirección de YouTube.", "alert-circle");
+                return;
+            }
+
+            // Regex inteligente para extraer la ID de cualquier URL de YouTube (completa, corta, embebida, etc.)
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            let videoId = null;
+
+            if (match && match[2].length === 11) {
+                videoId = match[2];
+            } else if (url.length === 11) {
+                videoId = url; // Soporta pegar directamente la ID de 11 caracteres
+            }
+
+            if (videoId) {
+                iframe.src = `https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=1&mute=0`;
+                showToast("Video cargado", "¡El video se cargó con éxito! Ya puedes reproducirlo.", "youtube");
+                urlInput.value = ""; // Limpiar campo
+            } else {
+                showToast("Error de enlace", "No se reconoció el formato del enlace de YouTube.", "alert-triangle");
+            }
+        }
+
+        // Guardar Declaración de Identidad (Slide 10)
+        function saveIdentity() {
+            const input = document.getElementById("identity-input");
+            const value = input.value.trim();
+
+            if (value) {
+                showToast("Declaración Guardada", "¡Fórmula de marca personal establecida!", "bookmark");
+                input.value = "";
+            } else {
+                showToast("Atención", "Escribe una declaración antes de guardar.", "edit-3");
+            }
+        }
+
+        // Soporte de navegación interactiva por teclado (Flechas arriba/abajo)
+        document.addEventListener("keydown", (event) => {
+            const container = document.getElementById("presentation-scroll");
+            const sectionHeight = window.innerHeight;
+
+            if (event.key === "ArrowDown" || event.key === "PageDown") {
+                event.preventDefault();
+                container.scrollBy({ top: sectionHeight, behavior: "smooth" });
+            } else if (event.key === "ArrowUp" || event.key === "PageUp") {
+                event.preventDefault();
+                container.scrollBy({ top: -sectionHeight, behavior: "smooth" });
+            }
+        });
     </script>
 </body>
 </html>
